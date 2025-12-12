@@ -1,0 +1,9 @@
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?storey ?space
+WHERE {
+  ?storey rdf:type bot:Storey .
+  ?storey bot:containsZone ?space .
+  ?space rdf:type bot:Space .
+}

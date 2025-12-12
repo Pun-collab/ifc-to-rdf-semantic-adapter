@@ -1,0 +1,6 @@
+PREFIX bot: <https://w3id.org/bot#>
+
+SELECT ?space ?element
+WHERE {
+  ?space bot:containsElement ?element .
+}

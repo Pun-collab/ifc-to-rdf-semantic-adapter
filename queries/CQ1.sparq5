@@ -1,0 +1,9 @@
+PREFIX bot: <https://w3id.org/bot#>
+
+SELECT DISTINCT ?element
+WHERE {
+  ?building a bot:Building .
+  ?building bot:containsZone ?storey .
+  ?storey bot:containsZone ?space .
+  ?space bot:containsElement ?element .
+}
