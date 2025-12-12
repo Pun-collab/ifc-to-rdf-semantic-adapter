@@ -1,0 +1,153 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix bot:  <https://w3id.org/bot#> .
+@prefix ex:   <http://example.com/instances#> .
+
+ex:inst_20
+    rdf:type bot:Site ;
+    rdfs:label "Main Site" ;
+    bot:containsZone ex:inst_30 .
+
+ex:inst_30
+    rdf:type bot:Building ;
+    rdfs:label "Main Office Building" ;
+    bot:containsZone ex:inst_40 ;
+    bot:containsZone ex:inst_41 .
+
+ex:inst_40
+    rdf:type bot:Storey ;
+    rdfs:label "Level 1" ;
+    bot:containsZone ex:inst_50 ;
+    bot:containsZone ex:inst_51 ;
+    bot:containsZone ex:inst_52 ;
+    bot:containsElement ex:inst_100 ;
+    bot:containsElement ex:inst_101 ;
+    bot:containsElement ex:inst_102 ;
+    bot:containsElement ex:inst_103 ;
+    bot:containsElement ex:inst_120 ;
+    bot:containsElement ex:inst_150 ;
+    bot:containsElement ex:inst_151 .
+
+ex:inst_41
+    rdf:type bot:Storey ;
+    rdfs:label "Level 2" ;
+    bot:containsZone ex:inst_53 ;
+    bot:containsZone ex:inst_54 ;
+    bot:containsZone ex:inst_55 ;
+    bot:containsElement ex:inst_120 ;
+    bot:containsElement ex:inst_121 .
+
+ex:inst_50
+    rdf:type bot:Space ;
+    rdfs:label "Lobby" ;
+    bot:containsElement ex:inst_110 ;
+    bot:containsElement ex:inst_111 ;
+    bot:containsElement ex:inst_130 ;
+    bot:containsElement ex:inst_131 ;
+    bot:containsElement ex:inst_132 ;
+    bot:containsElement ex:inst_160 .
+
+ex:inst_51
+    rdf:type bot:Space ;
+    rdfs:label "Meeting Room 1" ;
+    bot:containsElement ex:inst_110 ;
+    bot:containsElement ex:inst_131 ;
+    bot:containsElement ex:inst_140 .
+
+ex:inst_52
+    rdf:type bot:Space ;
+    rdfs:label "Meeting Room 2" ;
+    bot:containsElement ex:inst_111 ;
+    bot:containsElement ex:inst_132 ;
+    bot:containsElement ex:inst_141 .
+
+ex:inst_53
+    rdf:type bot:Space ;
+    rdfs:label "Office Open Space" ;
+    bot:containsElement ex:inst_100 ;
+    bot:containsElement ex:inst_101 ;
+    bot:containsElement ex:inst_121 ;
+    bot:containsElement ex:inst_150 .
+
+ex:inst_54
+    rdf:type bot:Space ;
+    rdfs:label "Manager Office" ;
+    bot:containsElement ex:inst_102 ;
+    bot:containsElement ex:inst_121 ;
+    bot:containsElement ex:inst_151 .
+
+ex:inst_55
+    rdf:type bot:Space ;
+    rdfs:label "Server Room" ;
+    bot:containsElement ex:inst_103 ;
+    bot:containsElement ex:inst_121 .
+
+ex:inst_100
+    rdf:type bot:Element ;
+    rdfs:label "Perimeter Wall N" .
+
+ex:inst_101
+    rdf:type bot:Element ;
+    rdfs:label "Perimeter Wall E" .
+
+ex:inst_102
+    rdf:type bot:Element ;
+    rdfs:label "Perimeter Wall S" .
+
+ex:inst_103
+    rdf:type bot:Element ;
+    rdfs:label "Perimeter Wall W" .
+
+ex:inst_110
+    rdf:type bot:Element ;
+    rdfs:label "Lobby – Meeting 1 Partition" .
+
+ex:inst_111
+    rdf:type bot:Element ;
+    rdfs:label "Lobby – Meeting 2 Partition" .
+
+ex:inst_120
+    rdf:type bot:Element ;
+    rdfs:label "Ground Floor Slab" .
+
+ex:inst_121
+    rdf:type bot:Element ;
+    rdfs:label "Second Floor Slab" .
+
+ex:inst_130
+    rdf:type bot:Element ;
+    rdfs:label "Lobby Main Entrance Door" .
+
+ex:inst_131
+    rdf:type bot:Element ;
+    rdfs:label "Door Lobby to Meeting 1" .
+
+ex:inst_132
+    rdf:type bot:Element ;
+    rdfs:label "Door Lobby to Meeting 2" .
+
+ex:inst_140
+    rdf:type bot:Element ;
+    rdfs:label "Window Meeting 1" .
+
+ex:inst_141
+    rdf:type bot:Element ;
+    rdfs:label "Window Meeting 2" .
+
+ex:inst_150
+    rdf:type bot:Element ;
+    rdfs:label "Column Grid A-1" .
+
+ex:inst_151
+    rdf:type bot:Element ;
+    rdfs:label "Column Grid A-2" .
+
+ex:inst_160
+    rdf:type bot:Element ;
+    rdfs:label "Composite Wall with Door" ;
+    bot:hasSubElement ex:inst_161 ;
+    bot:hasSubElement ex:inst_130 .
+
+ex:inst_161
+    rdf:type bot:Element ;
+    rdfs:label "Inner Layer of Composite Wall" .

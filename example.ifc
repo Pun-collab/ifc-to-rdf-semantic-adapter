@@ -1,0 +1,125 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('Example IFC for BOT semantic adapter'), '2;1');
+FILE_NAME('example.ifc', '2025-12-12T12:00:00', ('Author'), ('Organization'), 'Preprocessor', 'OriginatingSystem', 'Authorization');
+FILE_SCHEMA(('IFC4'));
+ENDSEC;
+
+DATA;
+
+#10 = IFCPROJECT('PRJ-001','Example Project', $, $, $, $, $, $);
+#20 = IFCSITE('SITE-001','Main Site', $, $, $, $, $, $);
+#30 = IFCBUILDING('BLDG-001','Main Office Building', $, $, $, $, $, $);
+
+#40 = IFCBUILDINGSTOREY('ST-01','Level 1', $, $, $, $, $, $);
+#41 = IFCBUILDINGSTOREY('ST-02','Level 2', $, $, $, $, $, $);
+
+#50 = IFCSPACE('SP-101','Lobby', $, $, $, $, $, $);
+#51 = IFCSPACE('SP-102','Meeting Room 1', $, $, $, $, $, $);
+#52 = IFCSPACE('SP-103','Meeting Room 2', $, $, $, $, $, $);
+
+#53 = IFCSPACE('SP-201','Office Open Space', $, $, $, $, $, $);
+#54 = IFCSPACE('SP-202','Manager Office', $, $, $, $, $, $);
+#55 = IFCSPACE('SP-203','Server Room', $, $, $, $, $, $);
+
+/* Elements: walls, slabs, doors, windows, columns */
+#100 = IFCWALL('WALL-001','Perimeter Wall N', $, $, $, $, $, $);
+#101 = IFCWALL('WALL-002','Perimeter Wall E', $, $, $, $, $, $);
+#102 = IFCWALL('WALL-003','Perimeter Wall S', $, $, $, $, $, $);
+#103 = IFCWALL('WALL-004','Perimeter Wall W', $, $, $, $, $, $);
+
+#110 = IFCWALL('WALL-101','Lobby – Meeting 1 Partition', $, $, $, $, $, $);
+#111 = IFCWALL('WALL-102','Lobby – Meeting 2 Partition', $, $, $, $, $, $);
+
+#120 = IFCSLAB('SLAB-01','Ground Floor Slab', $, $, $, $, $, $);
+#121 = IFCSLAB('SLAB-02','Second Floor Slab', $, $, $, $, $, $);
+
+#130 = IFCDOOR('DOOR-101','Lobby Main Entrance Door', $, $, $, $, $, $);
+#131 = IFCDOOR('DOOR-102','Door Lobby to Meeting 1', $, $, $, $, $, $);
+#132 = IFCDOOR('DOOR-103','Door Lobby to Meeting 2', $, $, $, $, $, $);
+
+#140 = IFCWINDOW('WIND-101','Window Meeting 1', $, $, $, $, $, $);
+#141 = IFCWINDOW('WIND-102','Window Meeting 2', $, $, $, $, $, $);
+
+#150 = IFCCOLUMN('COL-01','Column Grid A-1', $, $, $, $, $, $);
+#151 = IFCCOLUMN('COL-02','Column Grid A-2', $, $, $, $, $, $);
+
+/* Example element decomposition – e.g. composite wall */
+#160 = IFCWALL('WALL-200','Composite Wall with Door', $, $, $, $, $, $);
+#161 = IFCWALL('WALL-201','Inner Layer of Composite Wall', $, $, $, $, $, $);
+
+/* -----------------------------------------------
+   IFCRELAGGREGATES — ZONE HIERARCHY
+   ----------------------------------------------- */
+#200 = IFCRELAGGREGATES('RA-PRJ-SITE',$,$,$,#10,(#20));
+#201 = IFCRELAGGREGATES('RA-SITE-BLDG',$,$,$,#20,(#30));
+#202 = IFCRELAGGREGATES('RA-BLDG-STY',$,$,$,#30,(#40,#41));
+
+/* Storey 1 contains spaces: Lobby, Meeting 1, Meeting 2 */
+#203 = IFCRELAGGREGATES('RA-ST1-SPC',$,$,$,#40,(#50,#51,#52));
+
+/* Storey 2 contains spaces: Open Office, Manager Office, Server Room */
+#204 = IFCRELAGGREGATES('RA-ST2-SPC',$,$,$,#41,(#53,#54,#55));
+
+/* IFCRELAGGREGATES — ELEMENT DECOMPOSITION (hasSubElement) */
+#205 = IFCRELAGGREGATES('RA-WALL-COMP',$,$,$,#160,(#161,#130));
+
+/* -----------------------------------------------
+   IFCRELCONTAINEDINSPATIALSTRUCTURE
+   Storeys and spaces contain elements (containsElement)
+   ----------------------------------------------- */
+
+/* Storey 1 contains perimeter walls, slab, columns */
+#210 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-ST1-ELEM',$,$,$,#40,(#100,#101,#102,#103,#120,#150,#151));
+
+/* Storey 2 contains slab and some walls reused or separate (example: same perimeter walls) */
+#211 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-ST2-ELEM',$,$,$,#41,(#120,#121));
+
+/* Lobby contains partition walls and doors, plus the composite wall */
+#212 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-LOBBY-ELEM',$,$,$,#50,(#110,#111,#130,#131,#132,#160));
+
+/* Meeting Room 1 contains door and window and one partition wall */
+#213 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-MEET1-ELEM',$,$,$,#51,(#110,#131,#140));
+
+/* Meeting Room 2 contains door and window and one partition wall */
+#214 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-MEET2-ELEM',$,$,$,#52,(#111,#132,#141));
+
+/* Open Office, Manager Office, Server Room share some elements (for realism) */
+#215 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-OFFICE-ELEM',$,$,$,#53,(#100,#101,#121,#150));
+#216 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-MANAGER-ELEM',$,$,$,#54,(#102,#121,#151));
+#217 = IFCRELCONTAINEDINSPATIALSTRUCTURE('RC-SERVER-ELEM',$,$,$,#55,(#103,#121));
+
+/* -----------------------------------------------
+   IFCRELCONNECTSELEMENTS — adjacency (adjacentElement)
+   ----------------------------------------------- */
+
+/* Perimeter walls adjacent in a loop N–E–S–W */
+#300 = IFCRELCONNECTSELEMENTS('RC-WALL-N-E',$,$,$,#100,(#101));
+#301 = IFCRELCONNECTSELEMENTS('RC-WALL-E-S',$,$,$,#101,(#102));
+#302 = IFCRELCONNECTSELEMENTS('RC-WALL-S-W',$,$,$,#102,(#103));
+#303 = IFCRELCONNECTSELEMENTS('RC-WALL-W-N',$,$,$,#103,(#100));
+
+/* Lobby partitions adjacent to lobby doors */
+#304 = IFCRELCONNECTSELEMENTS('RC-LOBBY-PART-DOOR1',$,$,$,#110,(#131));
+#305 = IFCRELCONNECTSELEMENTS('RC-LOBBY-PART-DOOR2',$,$,$,#111,(#132));
+
+/* Composite wall adjacent to perimeter wall */
+#306 = IFCRELCONNECTSELEMENTS('RC-COMP-PERI',$,$,$,#160,(#100));
+
+/* -----------------------------------------------
+   IFCRELINTERFERESELEMENTS — intersection (intersectingElement)
+   ----------------------------------------------- */
+
+/* Columns intersect slabs */
+#400 = IFCRELINTERFERESELEMENTS('RI-COL1-SLAB1',$,$,$,#150,(#120));
+#401 = IFCRELINTERFERESELEMENTS('RI-COL2-SLAB1',$,$,$,#151,(#120));
+#402 = IFCRELINTERFERESELEMENTS('RI-COL1-SLAB2',$,$,$,#150,(#121));
+#403 = IFCRELINTERFERESELEMENTS('RI-COL2-SLAB2',$,$,$,#151,(#121));
+
+/* Doors intersect walls (door openings in walls) */
+#404 = IFCRELINTERFERESELEMENTS('RI-DOOR-LOBBY-WALL',$,$,$,#130,(#100));
+#405 = IFCRELINTERFERESELEMENTS('RI-DOOR-M1-WALL',$,$,$,#131,(#110));
+#406 = IFCRELINTERFERESELEMENTS('RI-DOOR-M2-WALL',$,$,$,#132,(#111));
+
+ENDSEC;
+END-ISO-10303-21;
